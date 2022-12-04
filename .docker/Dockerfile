@@ -1,11 +1,4 @@
-FROM node:latest AS node_base
-
-RUN echo "NODE Version:" && node --version
-RUN echo "NPM Version:" && npm --version
-
 FROM php:8.1-fpm
-
-COPY --from=node_base . .
 
 # Set working directory
 WORKDIR /code
@@ -25,6 +18,9 @@ RUN apt-get update && apt-get install -y \
     curl \
     libmcrypt-dev \
     openssl
+
+RUN curl -fsSL https://deb.nodesource.com/setup_current.x | bash - && \
+    apt-get install -y nodejs
 
 # Clear cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
